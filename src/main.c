@@ -49,8 +49,6 @@ struct arp_data arp;
 
 volatile bool lfoInterruptFlag = false;
 
-/* main */
-
 void interrupt_callback(void) {
 
     lfoInterruptFlag = true;
@@ -85,7 +83,50 @@ int main(void) {
 
     // loop
 
+    bool led_state = false;
+
     while(1) {
+
+        btn_update_buttonState(&btn);
+        btn_update_events(&btn);
+
+        kb_update_keyState(&kb);
+        kb_update_events(&kb);
+        
+        int note;
+
+        if (kb.keyOnEvent >= 0) {
+
+            note = s.transpose_tgl + s.transpose_btn + kb.keyOnEvent;
+            portamento_set_chan1(s.portamento1 == PORTA_ON);
+            dacmux_set_cv1(&dacmux, note * 17 + 290);
+            gate_on_pulse();
+
+        } else if (kb.keyLegatoEvent >= 0) {
+
+            note = s.transpose_tgl + s.transpose_btn + kb.keyLegatoEvent;
+            portamento_set_chan1( (s.portamento1 == PORTA_ON)
+                                    || (s.portamento1 == PORTA_AUTO) );
+
+            dacmux_set_cv1(&dacmux, note * 17 + 290);
+            gate_on();
+
+        } else if (kb.keyOffEvent) {
+
+            if (!s.hold) gate_off();
+
+        }
+
+        if (lfoInterruptFlag) {
+
+            led_state = !led_state;
+            leds_set_load(&leds, led_state);
+            lfoInterruptFlag = false;
+
+        }
+
+        leds_output(&leds);
+        dacmux_output(&dacmux);
 
     }
 
