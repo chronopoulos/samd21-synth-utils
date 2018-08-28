@@ -8,8 +8,8 @@ Microchip SAM21G18AU ARM Cortex-M0+ MCU using the GNU ARM Embedded Toolchain.
 ## Dependencies
 
 ```
-sudo apt-get install gcc-arm-none-eabi gdb-arm-none-eabi libnewlib-arm-none-eabi
-libstdc++-arm-none-eabi-newlib openocd
+sudo apt-get install gcc-arm-none-eabi gdb-arm-none-eabi libnewlib-arm-none-eabi \
+    libstdc++-arm-none-eabi-newlib openocd
 ```
 
 Note that OpenOCD version >= 0.10.0 is required. Depending on your software
