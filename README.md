@@ -25,7 +25,7 @@ Makefile to its location.
 
 ## Build Instructions
 
-Connect at Atmel-ICE debugger to the SWD interface on the board, then:
+Connect at Atmel-ICE debugger to the SWD header on the board, then:
 
 ```
 make
